@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Narula Wedding Planner | Premium Catering</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
+
+  <style>
+    :root{ --charcoal:#333333; --gold:#D4AF37; --ivory:#FFFFF0; }
+    html { scroll-behavior: smooth; }
+    body { font-family:'Montserrat', sans-serif; background:var(--ivory); color:var(--charcoal); }
+    h1,h2,h3,h4 { font-family:'Playfair Display', serif; }
+    section{ scroll-margin-top: 90px; }
+
+    /* Nav underline hover + active state */
+    .navlink{
+      position:relative; padding-bottom:6px;
+      letter-spacing:0.18em; font-size:0.78rem; text-transform:uppercase;
+      opacity:.78; transition:opacity 250ms ease, transform 250ms ease;
+    }
+    .navlink:hover{ opacity:1; transform:translateY(-1px); }
+    .navlink::after{
+      content:""; position:absolute; left:0; bottom:0; height:1px; width:0%;
+      background:var(--gold); transition:width 300ms ease;
+    }
+    .navlink:hover::after{ width:100%; }
+    .navlink.active{ opacity:1; }
+    .navlink.active::after{ width:100%; }
+
+    /* Luxury hover */
+    .lux-card{
+      transition:transform 350ms ease, box-shadow 350ms ease, border-color 350ms ease, background 350ms ease;
+      border:1px solid rgba(212,175,55,0.35);
+      background:rgba(255,255,240,0.78);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .lux-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 18px 45px rgba(0,0,0,0.18);
+      border-color:rgba(212,175,55,0.85);
+      background:rgba(255,255,240,0.90);
+    }
+    .lux-img{
+      transition:transform 450ms ease, filter 450ms ease;
+      filter:saturate(1.02) contrast(1.02);
+    }
+    .lux-img:hover{ transform:scale(1.03); filter:saturate(1.08) contrast(1.08); }
+
+    .gold-divider{
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(212,175,55,.9), transparent);
+    }
+
+    /* WhatsApp FAB */
+    .wa-fab{
+      position:fixed; right:18px; bottom:18px; z-index:9999;
+      display:flex; align-items:center; gap:10px;
+      padding:12px 14px; border-radius:999px;
+      background:#25D366; color:#fff;
+      box-shadow:0 14px 40px rgba(0,0,0,0.25);
+      transition:transform 250ms ease, box-shadow 250ms ease;
+    }
+    .wa-fab:hover{ transform:translateY(-3px); box-shadow:0 18px 48px rgba(0,0,0,0.32); }
+    .wa-fab span{ font-size:.85rem; letter-spacing:.06em; white-space:nowrap; }
+
+    /* Back-to-top button */
+    .top-fab{
+      position:fixed; right:18px; bottom:78px; z-index:9998;
+      display:flex; align-items:center; justify-content:center;
+      width:46px; height:46px; border-radius:999px;
+      background:rgba(51,51,51,.92); color:white;
+      box-shadow:0 14px 40px rgba(0,0,0,0.25);
+      transform:translateY(12px);
+      opacity:0; pointer-events:none;
+      transition:opacity 220ms ease, transform 220ms ease;
+    }
+    .top-fab.show{ opacity:1; transform:translateY(0); pointer-events:auto; }
+
+    /* =========================
+       SIGNATURE AUTO MOVING ROW
+       - horizontal, 3 visible
+       - smooth right -> left
+       ========================= */
+    .signature-marquee{
+      overflow:hidden;
+      position:relative;
+
+      /* premium fade edges */
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    }
+
+    .signature-track{
+      display:flex;
+      flex-wrap:nowrap;
+      gap:24px;             /* same as gap-6 */
+      width:max-content;
+      will-change:transform;
+      animation: signatureMove 40s linear infinite; /* slow luxury speed */
+    }
+
+    /* Exactly 3 cards visible in the section */
+    .signature-track > .signature-item{
+      flex: 0 0 calc((100% - 48px) / 3);
+      max-width: calc((100% - 48px) / 3);
+    }
+
+    @keyframes signatureMove{
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); } /* because we duplicate set */
+    }
+
+    /* optional: pause on hover */
+    .signature-marquee:hover .signature-track{
+      animation-play-state: paused;
+    }
+
+    /* responsive */
+    @media (max-width: 1024px){
+      .signature-track > .signature-item{
+        flex: 0 0 calc((100% - 24px) / 2);
+        max-width: calc((100% - 24px) / 2);
+      }
+    }
+    @media (max-width: 640px){
+      .signature-track > .signature-item{
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      html{ scroll-behavior:auto; }
+      .lux-card, .lux-img, .navlink::after, .wa-fab, .top-fab{ transition:none !important; }
+      .signature-track{ animation:none !important; transform:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-black/5">
+    <nav class="max-w-7xl mx-auto flex items-center justify-between px-5 py-4">
+      <a href="#home" class="flex items-center gap-3">
+        <img src="assets/logo.png" class="h-11 w-auto" alt="Narula Wedding Planner Logo">
+        <div class="hidden sm:block leading-tight">
+          <div class="text-[13px] tracking-[0.25em] uppercase">Narula</div>
+          <div class="text-[11px] tracking-[0.22em] uppercase text-black/60">Wedding Planner</div>
+        </div>
+      </a>
+
+      <button id="menuBtn" class="md:hidden px-3 py-2 border border-black/10 rounded-lg">
+        <span class="text-sm tracking-widest">MENU</span>
+      </button>
+
+      <div class="hidden md:flex items-center gap-8">
+        <a class="navlink" data-nav href="#home">Home</a>
+        <a class="navlink" data-nav href="#services">Services</a>
+        <a class="navlink" data-nav href="#signature">Signature</a>
+        <a class="navlink" data-nav href="#menu">Menu</a>
+        <a class="navlink" data-nav href="#gallery">Gallery</a>
+        <a class="navlink" data-nav href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <!-- Mobile dropdown -->
+    <div id="mobileNav" class="md:hidden hidden border-t border-black/5 bg-white">
+      <div class="px-5 py-4 flex flex-col gap-4">
+        <a class="navlink w-fit" data-nav href="#home">Home</a>
+        <a class="navlink" data-nav href="#services">Services</a>
+        <a class="navlink w-fit" data-nav href="#signature">Signature</a>
+        <a class="navlink w-fit" data-nav href="#menu">Menu</a>
+        <a class="navlink w-fit" data-nav href="#gallery">Gallery</a>
+        <a class="navlink w-fit" data-nav href="#contact">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="relative min-h-[88vh] flex items-center">
+    <div class="absolute inset-0">
+      <video class="w-full h-full object-cover"
+       src="assets/reel1.mp4"
+       autoplay
+       muted
+       loop
+       playsinline>
+</video>
+
+
+      <div class="absolute inset-0 bg-black/45"></div>
+    </div>
+
+    <div class="relative w-full">
+      <div class="max-w-7xl mx-auto px-6 py-16">
+        <div class="max-w-2xl lux-card rounded-2xl p-8 sm:p-10" data-aos="fade-up">
+          <div class="text-[11px] tracking-[0.38em] uppercase text-black/70">
+            Luxury • Minimal • Editorial
+          </div>
+          <h1 class="mt-4 text-4xl sm:text-5xl leading-tight text-[var(--charcoal)]">
+            Crafting Royal Celebrations
+          </h1>
+          <p class="mt-4 text-base sm:text-lg text-black/70 leading-relaxed">
+            Premium wedding catering designed like an editorial—clean lines, refined flavors, and unforgettable presence.
+          </p>
+
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a href="#contact" class="px-6 py-3 rounded-xl bg-[var(--gold)] text-white tracking-widest text-sm text-center hover:opacity-90 transition">
+              BOOK A TASTING
+            </a>
+            <a href="#menu" class="px-6 py-3 rounded-xl border border-[rgba(212,175,55,.7)] tracking-widest text-sm text-center hover:bg-white transition">
+              VIEW MENU
+            </a>
+          </div>
+
+          <div class="mt-8 gold-divider"></div>
+
+          <div class="mt-6 grid grid-cols-3 gap-4 text-center text-xs tracking-widest uppercase text-black/60">
+            <div><div class="text-lg text-[var(--gold)] font-semibold">100+</div><div>Events</div></div>
+            <div><div class="text-lg text-[var(--gold)] font-semibold">Royal</div><div>Setups</div></div>
+            <div><div class="text-lg text-[var(--gold)] font-semibold">Live</div><div>Stations</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+</section>
+<!-- SERVICES -->
+<section id="services" class="py-20 bg-white/60">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center max-w-3xl mx-auto">
+      <div class="text-[11px] tracking-[0.38em] uppercase text-black/60" data-aos="fade-up">
+        Services
+      </div>
+
+      <h2 class="mt-4 text-3xl sm:text-4xl text-[var(--charcoal)]" data-aos="fade-up" data-aos-delay="120">
+        Catering crafted for every kind of celebration
+      </h2>
+
+      <p class="mt-5 text-black/70 leading-relaxed" data-aos="fade-up" data-aos-delay="220">
+        Choose a package style — we’ll tailor cuisines, counters, and service flow to match your event.
+      </p>
+
+      <div class="mt-8 flex justify-center" data-aos="fade-up" data-aos-delay="280">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/10 bg-white tracking-widest text-[11px] uppercase text-black/60">
+          <span class="inline-block w-2 h-2 rounded-full bg-[var(--gold)]"></span>
+          Early date booking recommended
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- Wedding -->
+      <article class="lux-card rounded-2xl overflow-hidden" data-aos="fade-up">
+        <div class="overflow-hidden">
+          <img src="assets/17.jpg"
+               alt="Wedding Packages"
+               class="w-full h-64 object-cover lux-img"
+               loading="lazy"/>
+        </div>
+        <div class="p-7">
+          <h3 class="text-2xl text-[var(--charcoal)]">Wedding Packages</h3>
+          <div class="mt-4 gold-divider"></div>
+          <p class="mt-4 text-black/70 leading-relaxed">
+            Multi-cuisine spreads, live counters, designer plating, and full-service staffing.
+          </p>
+          <div class="mt-6 flex items-center justify-between gap-3">
+            <div class="text-[11px] tracking-[0.22em] uppercase text-black/55">
+              Customizable • Taste-led
+            </div>
+            <a href="#contact" class="px-5 py-3 rounded-xl bg-[var(--gold)] text-white tracking-widest text-sm text-center hover:opacity-90 transition">
+              ENQUIRE
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Corporate -->
+      <article class="lux-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="120">
+        <div class="overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1600&q=80"
+               alt="Corporate Events"
+               class="w-full h-64 object-cover lux-img"
+               loading="lazy"/>
+        </div>
+        <div class="p-7">
+          <h3 class="text-2xl text-[var(--charcoal)]">Corporate Events</h3>
+          <div class="mt-4 gold-divider"></div>
+          <p class="mt-4 text-black/70 leading-relaxed">
+            Polished setups for conferences, launches, and premium office gatherings.
+          </p>
+          <div class="mt-6 flex items-center justify-between gap-3">
+            <div class="text-[11px] tracking-[0.22em] uppercase text-black/55">
+              Clean setup • On-time
+            </div>
+            <a href="#contact" class="px-5 py-3 rounded-xl bg-[var(--gold)] text-white tracking-widest text-sm text-center hover:opacity-90 transition">
+              ENQUIRE
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Social -->
+      <article class="lux-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="240">
+        <div class="overflow-hidden">
+          <img src="assets/18.jpg"
+
+               alt="Social Gatherings"
+               class="w-full h-64 object-cover lux-img"
+               loading="lazy"/>
+        </div>
+        <div class="p-7">
+          <h3 class="text-2xl text-[var(--charcoal)]">Social Gatherings</h3>
+          <div class="mt-4 gold-divider"></div>
+          <p class="mt-4 text-black/70 leading-relaxed">
+            Birthdays, anniversaries, house parties — elegant bites and seamless service.
+          </p>
+          <div class="mt-6 flex items-center justify-between gap-3">
+            <div class="text-[11px] tracking-[0.22em] uppercase text-black/55">
+              Warm hospitality • Premium
+            </div>
+            <a href="#contact" class="px-5 py-3 rounded-xl bg-[var(--gold)] text-white tracking-widest text-sm text-center hover:opacity-90 transition">
+              ENQUIRE
+            </a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- SIGNATURE -->
+  <section id="signature" class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-4xl mx-auto">
+        <div class="text-[11px] tracking-[0.38em] uppercase text-black/60" data-aos="fade-up">
+          Signature Philosophy
+        </div>
+        <h2 class="mt-4 text-3xl sm:text-4xl text-[var(--charcoal)]" data-aos="fade-up" data-aos-delay="120">
+          Signature Culinary Concepts
+        </h2>
+        <p class="mt-6 text-base sm:text-lg text-black/70 leading-relaxed" data-aos="fade-up" data-aos-delay="220">
+          Each celebration carries its own rhythm — a unique sense of place, people, and purpose.
+          Our signature concepts are inspired by the moments we’ve been a part of, thoughtfully shaped by guest sensibilities,
+          cultural contexts, and the evolving art of celebrations.
+        </p>
+      </div>
+
+      <div class="mt-12 signature-marquee" data-aos="fade-up" data-aos-delay="260">
+  <div class="signature-track">
+    <!-- SET 1 -->
+    <div class="signature-card rounded-2xl overflow-hidden lux-card">
+      <img src="assets/1.jpg" class="w-full h-64 object-cover lux-img" alt="Signature 1">
+      <div class="p-5">
+        <h3 class="text-xl">Ivory Elegance</h3>
+        <p class="mt-2 text-sm text-black/65">Minimal plating. Maximum presence. Gold accents throughout.</p>
+      </div>
+    </div>
+
+    <div class="signature-card rounded-2xl overflow-hidden lux-card">
+      <img src="assets/9.jpg" class="w-full h-64 object-cover lux-img" alt="Signature 2">
+      <div class="p-5">
+        <h3 class="text-xl">Charcoal Modern</h3>
+        <p class="mt-2 text-sm text-black/65">Editorial buffet layouts with clean geometry and premium textures.</p>
+      </div>
+    </div>
+
+    <div class="signature-card rounded-2xl overflow-hidden lux-card">
+      <img src="assets/4.jpg" class="w-full h-64 object-cover lux-img" alt="Signature 3">
+      <div class="p-5">
+        <h3 class="text-xl">Golden Rituals</h3>
+        <p class="mt-2 text-sm text-black/65">Live stations styled like royal courts—interactive and refined.</p>
+      </div>
+    </div>
+
+    <div class="signature-card rounded-2xl overflow-hidden lux-card">
+      <img src="assets/7.jpg" class="w-full h-64 object-cover lux-img" alt="Signature 4">
+      <div class="p-5">
+        <h3 class="text-xl">Midnight Luxe</h3>
+        <p class="mt-2 text-sm text-black/65">Dark palettes, spotlight plating, and dramatic detailing.</p>
+      </div>
+    </div>
+
+    <!-- SET 2 (duplicate the same cards for seamless loop) -->
+    <div class="signature-card rounded-2xl overflow-hidden lux-card">
+      <img src="assets/1.jpg" class="w-full h-64 object-cover lux-img" alt="Signature 1">
+      <div class="p-5">
+        <h3 class="text-xl">Ivory Elegance</h3>
+        <p class="mt-2 text-sm text-black/65">Minimal plating. Maximum presence. Gold accents throughout.</p>
+      </div>
+    </div>
+
+    <div class="signature-card rounded-2xl overflow-hidden lux-card">
+      <img src="assets/9.jpg" class="w-full h-64 object-cover lux-img" alt="Signature 2">
+      <div class="p-5">
+        <h3 class="text-xl">Charcoal Modern</h3>
+        <p class="mt-2 text-sm text-black/65">Editorial buffet layouts with clean geometry and premium textures.</p>
+      </div>
+    </div>
+
+    <div class="signature-card rounded-2xl overflow-hidden lux-card">
+      <img src="assets/4.jpg" class="w-full h-64 object-cover lux-img" alt="Signature 3">
+      <div class="p-5">
+        <h3 class="text-xl">Golden Rituals</h3>
+        <p class="mt-2 text-sm text-black/65">Live stations styled like royal courts—interactive and refined.</p>
+      </div>
+    </div>
+
+    <div class="signature-card rounded-2xl overflow-hidden lux-card">
+      <img src="assets/7.jpg" class="w-full h-64 object-cover lux-img" alt="Signature 4">
+      <div class="p-5">
+        <h3 class="text-xl">Midnight Luxe</h3>
+        <p class="mt-2 text-sm text-black/65">Dark palettes, spotlight plating, and dramatic detailing.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </section>
+
+  <!-- MENU -->
+  <section id="menu" class="py-20 bg-white/60">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto">
+        <div class="text-[11px] tracking-[0.38em] uppercase text-black/60" data-aos="fade-up">Our Offerings</div>
+        <h2 class="mt-4 text-3xl sm:text-4xl" data-aos="fade-up" data-aos-delay="120">Wedding Menu</h2>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lux-card rounded-2xl p-7" data-aos="fade-up">
+          <h3 class="text-2xl">Starters</h3><div class="mt-4 gold-divider"></div>
+          <ul class="mt-5 space-y-3 text-black/75">
+            <li>Royal Paneer Tikka</li><li>Mini Stuffed Kulchas</li><li>Exotic Fruit Chaat</li><li>Hara Bhara Kebab</li><li>Lebanese Mezze Cups</li>
+          </ul>
+        </div>
+        <div class="lux-card rounded-2xl p-7" data-aos="fade-up" data-aos-delay="120">
+          <h3 class="text-2xl">Main Course</h3><div class="mt-4 gold-divider"></div>
+          <ul class="mt-5 space-y-3 text-black/75">
+            <li>Dal Makhani</li><li>Shahi Paneer</li><li>Hyderabadi Biryani</li><li>Butter Naan / Laccha Paratha</li><li>Seasonal Veg Jalfrezi</li>
+          </ul>
+        </div>
+        <div class="lux-card rounded-2xl p-7" data-aos="fade-up" data-aos-delay="240">
+          <h3 class="text-2xl">Live Stations</h3><div class="mt-4 gold-divider"></div>
+          <ul class="mt-5 space-y-3 text-black/75">
+            <li>Chaat Counter</li><li>Pasta Bar</li><li>Dessert Flambé</li><li>Mocktail Lab</li><li>Live Tandoor</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY (DYNAMIC) -->
+  <section id="gallery" class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto">
+        <div class="text-[11px] tracking-[0.38em] uppercase text-black/60" data-aos="fade-up">Visual Story</div>
+        <h2 class="mt-4 text-3xl sm:text-4xl" data-aos="fade-up" data-aos-delay="120">Gallery</h2>
+        <p class="mt-5 text-black/70" data-aos="fade-up" data-aos-delay="220">
+          Photos auto-loaded from your <code>assets/</code> folder.
+        </p>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="rounded-2xl overflow-hidden lux-card" data-aos="fade-up">
+          <video src="assets/reel1.mp4"
+         autoplay
+         muted
+         loop
+         playsinline ></video>
+        </div>
+        <div class="rounded-2xl overflow-hidden lux-card" data-aos="fade-up" data-aos-delay="120">
+          <video src="assets/reel1.mp4" controls class="w-full"></video>
+        </div>
+      </div>
+
+      <div id="galleryMasonry" class="mt-10 columns-1 sm:columns-2 lg:columns-3 gap-5 [column-fill:_balance]"></div>
+
+      <p id="galleryStatus" class="mt-8 text-center text-sm text-black/60 hidden"></p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="py-20 bg-white/60">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl">Book Your Event</h2>
+        <p class="mt-5 text-black/70">Fill the form and we’ll respond with availability and packages.</p>
+      </div>
+
+      <div class="lux-card rounded-2xl p-8" data-aos="fade-up" data-aos-delay="120">
+        <form id="bookingForm" action="/send" method="POST" class="space-y-5">
+          <input required name="name" type="text" placeholder="Your Name"
+            class="w-full p-3 rounded-xl border border-black/10 bg-white focus:outline-none focus:ring-2 focus:ring-[rgba(212,175,55,.55)]">
+          <input required name="email" type="email" placeholder="Your Email"
+            class="w-full p-3 rounded-xl border border-black/10 bg-white focus:outline-none focus:ring-2 focus:ring-[rgba(212,175,55,.55)]">
+          <textarea required name="message" rows="5" placeholder="Event Details"
+            class="w-full p-3 rounded-xl border border-black/10 bg-white focus:outline-none focus:ring-2 focus:ring-[rgba(212,175,55,.55)]"></textarea>
+
+          <button id="submitBtn" type="submit"
+            class="w-full py-3 rounded-xl bg-[var(--gold)] text-white tracking-widest text-sm transition hover:opacity-90 hover:-translate-y-[1px]">
+            SUBMIT INQUIRY
+          </button>
+
+          <p id="formStatus" class="text-sm text-black/70 hidden"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-[var(--charcoal)] text-white text-center p-6">
+    © 2026 Narula Wedding Planner | Crafted with Elegance
+  </footer>
+
+  <!-- Back to top -->
+  <button id="toTop" class="top-fab" aria-label="Back to top" title="Back to top">↑</button>
+
+  <!-- WhatsApp Booking Button (REPLACE NUMBER) -->
+  <a
+    class="wa-fab"
+    href="https://wa.me/+918222978986?text=Hello%20Narula%20Wedding%20Planner!%20I%20want%20to%20book%20premium%20catering."
+    target="_blank"
+    rel="noopener"
+    aria-label="Book on WhatsApp"
+  >
+    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path fill="white" d="M16 3C8.82 3 3 8.73 3 15.8c0 2.49.74 4.8 2.01 6.74L4 29l6.64-1.92A13.24 13.24 0 0 0 16 28.6c7.18 0 13-5.73 13-12.8S23.18 3 16 3zm0 23.2c-1.85 0-3.58-.5-5.07-1.38l-.36-.21-3.94 1.14 1.17-3.8-.23-.38A10.84 10.84 0 0 1 5.2 15.8C5.2 9.95 10.05 5.2 16 5.2S26.8 9.95 26.8 15.8 21.95 26.2 16 26.2z"/>
+    </svg>
+    <span class="hidden sm:block">Book on WhatsApp</span>
+  </a>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    // AOS Init
+    AOS.init({ duration: 900, easing: "ease-out-cubic", once: true, offset: 80 });
+
+    // Mobile nav toggle
+    const btn = document.getElementById("menuBtn");
+    const mobileNav = document.getElementById("mobileNav");
+    btn?.addEventListener("click", () => mobileNav.classList.toggle("hidden"));
+    mobileNav?.querySelectorAll("a").forEach(a => a.addEventListener("click", () => mobileNav.classList.add("hidden")));
+
+    // Back to top
+    const toTop = document.getElementById("toTop");
+    const toggleTopBtn = () => {
+      if (window.scrollY > 600) toTop.classList.add("show");
+      else toTop.classList.remove("show");
+    };
+    window.addEventListener("scroll", toggleTopBtn, { passive: true });
+    toggleTopBtn();
+    toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    // Section highlight on scroll
+    const navLinks = Array.from(document.querySelectorAll("[data-nav]"));
+    const sections = navLinks
+      .map(a => document.querySelector(a.getAttribute("href")))
+      .filter(Boolean);
+
+    const setActive = (id) => {
+      navLinks.forEach(a => {
+        const isActive = a.getAttribute("href") === `#${id}`;
+        a.classList.toggle("active", isActive);
+      });
+    };
+
+    const io = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible?.target?.id) setActive(visible.target.id);
+    }, { root: null, threshold: [0.2, 0.35, 0.5, 0.65] });
+
+    sections.forEach(sec => io.observe(sec));
+
+    // Dynamic Gallery loader from Node directory scan
+    async function loadGallery() {
+      const wrap = document.getElementById("galleryMasonry");
+      const status = document.getElementById("galleryStatus");
+
+      try {
+        const res = await fetch("/api/gallery");
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.message || "Gallery API failed");
+
+        const images = (data.images || []).filter(Boolean);
+
+        if (!images.length) {
+          status.classList.remove("hidden");
+          status.textContent = "No images found in /assets (add 1.jpg, 2.jpg, etc.).";
+          return;
+        }
+
+        wrap.innerHTML = images.map((src, idx) => `
+          <div class="mb-5 break-inside-avoid rounded-2xl overflow-hidden lux-card" data-aos="fade-up" data-aos-delay="${Math.min(idx * 40, 240)}">
+            <img src="${src}" alt="Gallery image ${idx+1}" class="w-full lux-img">
+          </div>
+        `).join("");
+
+        AOS.refreshHard();
+      } catch (e) {
+        status.classList.remove("hidden");
+        status.textContent = "Gallery could not load. Make sure server.js is running and assets folder exists.";
+      }
+    }
+    loadGallery();
+
+    // AJAX contact form submit
+    const form = document.getElementById("bookingForm");
+    const statusEl = document.getElementById("formStatus");
+    const submitBtn = document.getElementById("submitBtn");
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusEl.classList.remove("hidden");
+      statusEl.textContent = "Sending…";
+      submitBtn.disabled = true;
+      submitBtn.classList.add("opacity-70");
+
+      const payload = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        const res = await fetch("/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.message || "Failed");
+        statusEl.textContent = "✅ Sent successfully! We will contact you soon.";
+        form.reset();
+      } catch {
+        statusEl.textContent = "❌ Failed. Try again or use WhatsApp.";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove("opacity-70");
+      }
+    });
+  </script>
+</body>
+</html>
