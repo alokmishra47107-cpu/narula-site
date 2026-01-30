@@ -290,3 +290,296 @@ button.bg-\[var\(--gold\)\]:hover{
     max-width: 100%;
   }
 }
+
+/* =========================================================
+   NARULA PREMIUM THEME (Pro + Dynamic)
+   Paste into style.css
+   ========================================================= */
+
+:root{
+  --charcoal:#333333;
+  --gold:#D4AF37;
+  --ivory:#FFFFF0;
+
+  --shadow-soft: 0 14px 40px rgba(0,0,0,0.18);
+  --shadow-hover: 0 18px 48px rgba(0,0,0,0.26);
+
+  --ring: rgba(212,175,55,.55);
+  --border-gold-soft: rgba(212,175,55,.35);
+  --border-gold-strong: rgba(212,175,55,.85);
+
+  --glass: rgba(255,255,240,0.78);
+  --glass-strong: rgba(255,255,240,0.90);
+}
+
+/* Smooth scroll + base */
+html{ scroll-behavior:smooth; }
+body{
+  font-family:'Montserrat', sans-serif;
+  background: var(--ivory);
+  color: var(--charcoal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1,h2,h3,h4{ font-family:'Playfair Display', serif; }
+section{ scroll-margin-top: 90px; }
+
+/* Subtle selection */
+::selection{
+  background: rgba(212,175,55,.28);
+}
+
+/* Better focus for accessibility (forms/buttons/links) */
+:where(a, button, input, textarea, select):focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+  border-radius: 12px;
+}
+
+/* -----------------------------------------
+   NAV underline hover + active state
+------------------------------------------ */
+.navlink{
+  position:relative;
+  padding-bottom:6px;
+  letter-spacing:0.18em;
+  font-size:0.78rem;
+  text-transform:uppercase;
+  opacity:.78;
+  transition:opacity 250ms ease, transform 250ms ease;
+}
+.navlink:hover{ opacity:1; transform: translateY(-1px); }
+.navlink::after{
+  content:"";
+  position:absolute;
+  left:0; bottom:0;
+  height:1px;
+  width:0%;
+  background: var(--gold);
+  transition:width 300ms ease;
+}
+.navlink:hover::after{ width:100%; }
+.navlink.active{ opacity:1; }
+.navlink.active::after{ width:100%; }
+
+/* -----------------------------------------
+   Luxury hover cards (you already use these)
+------------------------------------------ */
+.lux-card{
+  transition:transform 350ms ease, box-shadow 350ms ease, border-color 350ms ease, background 350ms ease;
+  border:1px solid var(--border-gold-soft);
+  background: var(--glass);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.lux-card:hover{
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--border-gold-strong);
+  background: var(--glass-strong);
+}
+
+.lux-img{
+  transition:transform 450ms ease, filter 450ms ease;
+  filter:saturate(1.02) contrast(1.02);
+}
+.lux-img:hover{
+  transform:scale(1.03);
+  filter:saturate(1.08) contrast(1.08);
+}
+
+/* Divider */
+.gold-divider{
+  height:1px;
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,.9), transparent);
+}
+
+/* -----------------------------------------
+   Buttons feel more premium (optional)
+------------------------------------------ */
+a[href="#contact"].bg-\[var\(--gold\)\],
+button.bg-\[var\(--gold\)\]{
+  box-shadow: 0 10px 24px rgba(212,175,55,.22);
+}
+a[href="#contact"].bg-\[var\(--gold\)\]:hover,
+button.bg-\[var\(--gold\)\]:hover{
+  box-shadow: 0 14px 30px rgba(212,175,55,.28);
+}
+
+/* -----------------------------------------
+   WhatsApp + Top buttons (your existing style, refined)
+------------------------------------------ */
+.wa-fab{
+  position:fixed; right:18px; bottom:18px; z-index:9999;
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px; border-radius:999px;
+  background:#25D366; color:#fff;
+  box-shadow: var(--shadow-soft);
+  transition:transform 250ms ease, box-shadow 250ms ease, filter 250ms ease;
+}
+.wa-fab:hover{ transform:translateY(-3px); box-shadow: var(--shadow-hover); filter:saturate(1.05); }
+.wa-fab span{ font-size:.85rem; letter-spacing:.06em; white-space:nowrap; }
+
+.top-fab{
+  position:fixed; right:18px; bottom:78px; z-index:9998;
+  display:flex; align-items:center; justify-content:center;
+  width:46px; height:46px; border-radius:999px;
+  background: rgba(51,51,51,.92); color:#fff;
+  box-shadow: var(--shadow-soft);
+  transform:translateY(12px);
+  opacity:0; pointer-events:none;
+  transition:opacity 220ms ease, transform 220ms ease;
+}
+.top-fab.show{ opacity:1; transform:translateY(0); pointer-events:auto; }
+
+/* =========================================================
+   ✅ SIGNATURE: HORIZONTAL AUTO SLIDER (3 visible, slow, smooth)
+   ---------------------------------------------------------
+   Use this HTML structure in Signature section:
+
+   <div class="signature-marquee">
+     <div class="signature-track">
+       <div class="lux-card">...</div>
+       ...more cards...
+       (then duplicate same cards again)
+     </div>
+   </div>
+
+   - IMPORTANT: Duplicate the same cards once for smooth loop.
+   - This keeps SAME card design (lux-card) + same image heights.
+   ========================================================= */
+
+.signature-marquee{
+  overflow:hidden;
+  position:relative;
+  /* Optional subtle fade on edges for premium look */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+.signature-track{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:24px;                 /* same as your gap-6 */
+  width:max-content;
+  will-change: transform;
+  animation: signatureScroll 34s linear infinite; /* slower = more premium */
+}
+
+/* Make EXACTLY 3 cards visible (same pattern) */
+.signature-track > *{
+  flex: 0 0 calc((100% - 48px)/3); /* 3 cards, 2 gaps */
+}
+
+/* Keep cards stable (no shrinking) */
+.signature-track > *{
+  min-width: calc((100% - 48px)/3);
+}
+
+/* Smooth infinite scroll */
+@keyframes signatureScroll{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(-50%); } /* because you duplicated the set */
+}
+
+/* Pause on hover (optional but professional) */
+.signature-marquee:hover .signature-track{
+  animation-play-state: paused;
+}
+
+/* Responsive: 2 cards on tablet, 1 on mobile */
+@media (max-width: 1024px){
+  .signature-track > *{
+    flex: 0 0 calc((100% - 24px)/2);
+    min-width: calc((100% - 24px)/2);
+  }
+}
+@media (max-width: 640px){
+  .signature-track > *{
+    flex: 0 0 100%;
+    min-width: 100%;
+  }
+}
+
+/* =========================================================
+   Motion safety (you already have reduced-motion; this extends it)
+   ========================================================= */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  .lux-card, .lux-img, .navlink::after, .wa-fab, .top-fab{ transition:none !important; }
+  .signature-track{ animation:none !important; transform:none !important; }
+}
+/* ================= SIGNATURE MOVING ROW ================= */
+
+.signature-move-wrapper{
+  overflow: hidden;
+}
+
+.signature-move-row{
+  display: flex;
+  gap: 24px; /* same as gap-6 */
+  animation: signatureMove 30s linear infinite;
+  width: max-content;
+}
+
+/* Each card keeps SAME grid size */
+.signature-move-row > div{
+  width: 350px; /* locks card size so layout doesn't change */
+  flex-shrink: 0;
+}
+
+/* Smooth right → left movement */
+@keyframes signatureMove{
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+/* ============ SIGNATURE: AUTO MOVING ROW (3 visible) ============ */
+
+.signature-move-wrapper{
+  overflow: hidden;
+  position: relative;
+
+  /* optional premium edge fade */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+.signature-move-row{
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;              /* same as Tailwind gap-6 */
+  width: max-content;
+  will-change: transform;
+  animation: signatureMove 34s linear infinite; /* slow luxury speed */
+}
+
+/* EXACTLY 3 cards visible in the section width */
+.signature-move-row > .signature-item{
+  flex: 0 0 calc((100% - 48px) / 3);  /* 3 cards, 2 gaps */
+  max-width: calc((100% - 48px) / 3);
+}
+
+/* Smooth right -> left loop (needs duplicate set in HTML) */
+@keyframes signatureMove{
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* pause on hover (optional) */
+.signature-move-wrapper:hover .signature-move-row{
+  animation-play-state: paused;
+}
+
+/* responsive */
+@media (max-width: 1024px){
+  .signature-move-row > .signature-item{
+    flex: 0 0 calc((100% - 24px) / 2);
+    max-width: calc((100% - 24px) / 2);
+  }
+}
+@media (max-width: 640px){
+  .signature-move-row > .signature-item{
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
