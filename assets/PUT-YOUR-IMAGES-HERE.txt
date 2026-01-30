@@ -1,0 +1,6 @@
+Create an `assets/` folder content like:
+- logo.png
+- 1.jpg, 2.jpg, 3.jpg ... (gallery images)
+- reel1.mp4 (if your HTML references it)
+
+Your server automatically scans assets/ for images and the page loads them into the gallery.

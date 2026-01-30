@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gallery | Narula</title>
+
+  <!-- Luxury Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/gallery.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html" aria-label="Narula Home">
+        <span class="brand-mark"></span>
+        <span class="brand-text">Narula</span>
+      </a>
+
+      <nav class="header-nav" aria-label="Primary">
+        <a href="./index.html#services">Services</a>
+        <a href="./index.html#menu">Menu</a>
+        <a class="active" href="./gallery.html">Gallery</a>
+        <a href="./index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <p class="kicker">Visual Story</p>
+        <h1 class="hero-title">A Gallery Curated Like a Luxury Editorial</h1>
+        <p class="hero-subtitle">
+          Explore signature celebrations—crafted with restraint, richness, and immaculate detail.
+        </p>
+      </div>
+    </section>
+
+    <section class="gallery-section">
+      <div class="container">
+        <div class="gallery-topbar">
+          <div class="tabs" role="tablist" aria-label="Gallery Categories">
+            <!-- Buttons injected by JS -->
+          </div>
+
+          <div class="gallery-meta">
+            <span class="meta-pill" id="resultsCount" aria-live="polite">—</span>
+            <span class="meta-hint">Tap an event to view the full story</span>
+          </div>
+        </div>
+
+        <div class="grid-wrap">
+          <div id="eventsGrid" class="events-grid" aria-live="polite">
+            <!-- Cards injected by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> Narula Wedding Planner | Crafted with Elegance</p>
+        <a class="to-top" href="#top" aria-label="Back to top">↑</a>
+      </div>
+    </footer>
+  </main>
+
+  <script src="assets/js/gallery.js" defer></script>
+</body>
+</html>

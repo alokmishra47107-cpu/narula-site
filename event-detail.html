@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Event Detail | Narula</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/gallery.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html" aria-label="Narula Home">
+        <span class="brand-mark"></span>
+        <span class="brand-text">Narula</span>
+      </a>
+
+      <nav class="header-nav" aria-label="Primary">
+        <a href="./index.html#services">Services</a>
+        <a href="./index.html#menu">Menu</a>
+        <a class="active" href="./gallery.html">Gallery</a>
+        <a href="./index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="detail-hero" id="detailHero" aria-label="Event hero">
+      <div class="detail-hero-bg" id="heroBg"></div>
+      <div class="detail-hero-overlay"></div>
+
+      <div class="container detail-hero-inner">
+        <a class="btn btn-ghost" href="./gallery.html" aria-label="Back to Gallery">
+          ← Back to Gallery
+        </a>
+
+        <p class="kicker" id="eventCategory">—</p>
+        <h1 class="detail-title" id="eventTitle">Loading…</h1>
+        <p class="detail-subtitle" id="eventSubtitle">—</p>
+      </div>
+    </section>
+
+    <section class="detail-content">
+      <div class="container detail-grid">
+        <article class="detail-copy">
+          <h2 class="section-title">The Story</h2>
+          <div class="rich-text" id="eventBody"></div>
+        </article>
+
+        <aside class="detail-side">
+          <div class="side-card">
+            <h3 class="side-title">Signature Notes</h3>
+            <ul class="side-list" id="eventNotes"></ul>
+          </div>
+
+          <div class="side-card">
+            <h3 class="side-title">Quick Actions</h3>
+            <div class="side-actions">
+              <a class="btn btn-gold" href="./index.html#contact">Enquire</a>
+              <a class="btn btn-ghost" href="./gallery.html">Browse More</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="detail-gallery">
+      <div class="container">
+        <div class="detail-gallery-head">
+          <h2 class="section-title">Gallery</h2>
+          <p class="section-subtitle">High-resolution moments & cinematic highlights.</p>
+        </div>
+
+        <div class="masonry" id="masonry">
+          <!-- Media injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> Narula Wedding Planner | Crafted with Elegance</p>
+        <a class="to-top" href="#top" aria-label="Back to top">↑</a>
+      </div>
+    </footer>
+  </main>
+
+  <script src="assets/js/event-detail.js" defer></script>
+</body>
+</html>
