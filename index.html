@@ -117,6 +117,35 @@
       .lux-card, .lux-img, .navlink::after, .wa-fab, .top-fab{ transition:none !important; }
       .signature-track{ animation:none !important; transform:none !important; }
     }
+    /* =======================
+   3D TILT SYSTEM
+======================= */
+.tilt{
+  position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  will-change: transform;
+}
+.tilt-inner{
+  transform: translateZ(35px);
+}
+.tilt::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:0;
+  transition: opacity 0.18s ease;
+  background: radial-gradient(
+    circle at var(--x,50%) var(--y,50%),
+    rgba(255,255,255,0.22),
+    transparent 45%
+  );
+}
+.tilt:hover::after{ opacity:1; }
+
   </style>
 
   <!-- Google Analytics -->
@@ -202,11 +231,13 @@
       </div>
 
       <div class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <article class="lux-card rounded-2xl overflow-hidden" data-aos="fade-up">
-          <div class="overflow-hidden">
+        
+        <article class="lux-card tilt rounded-2xl overflow-hidden" data-aos="fade-up">
+          <div class="tilt-inner">
+           <div class="overflow-hidden">
             <img src="assets/17.jpg" alt="Wedding Packages" class="w-full h-64 object-cover lux-img" loading="lazy"/>
-          </div>
-          <div class="p-7">
+             </div>
+            <div class="p-7">
             <h3 class="text-2xl text-[var(--charcoal)]">Wedding Packages</h3>
             <div class="mt-4 gold-divider"></div>
             <p class="mt-4 text-black/70 leading-relaxed">
@@ -218,10 +249,14 @@
                 ENQUIRE
               </a>
             </div>
+           </div>
           </div>
         </article>
 
-        <article class="lux-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="120">
+        
+
+        <article class="lux-card tilt rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="120">
+            <div class="tilt-inner">
           <div class="overflow-hidden">
             <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1600&q=80"
                  alt="Corporate Events" class="w-full h-64 object-cover lux-img" loading="lazy"/>
@@ -238,10 +273,13 @@
                 ENQUIRE
               </a>
             </div>
+      
+          </div>
           </div>
         </article>
 
-        <article class="lux-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="240">
+        <article class="lux-card tilt rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="240">
+          <div class="tilt-inner">
           <div class="overflow-hidden">
             <img src="assets/18.jpg" alt="Social Gatherings" class="w-full h-64 object-cover lux-img" loading="lazy"/>
           </div>
@@ -257,6 +295,7 @@
                 ENQUIRE
               </a>
             </div>
+          </div>
           </div>
         </article>
       </div>
@@ -407,7 +446,8 @@
         <p class="mt-5 text-black/70">Fill the form and we’ll respond with availability and packages.</p>
       </div>
 
-      <div class="lux-card rounded-2xl p-8" data-aos="fade-up" data-aos-delay="120">
+      <div class="lux-card tilt rounded-2xl p-8" data-aos="fade-up" data-aos-delay="120">
+  <div class="tilt-inner">
         <form id="bookingForm" action="/send" method="POST" class="space-y-5">
           <input required name="name" type="text" placeholder="Your Name"
             class="w-full p-3 rounded-xl border border-black/10 bg-white focus:outline-none focus:ring-2 focus:ring-[rgba(212,175,55,.55)]">
@@ -424,6 +464,9 @@
           <p id="formStatus" class="text-sm text-black/70 hidden"></p>
         </form>
       </div>
+        </div>
+
+
     </div>
   </section>
 
@@ -490,5 +533,6 @@
 
     sections.forEach(sec => io.observe(sec));
   </script>
+  <script src="tilt.js"></script>
 </body>
 </html>

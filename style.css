@@ -583,3 +583,42 @@ button.bg-\[var\(--gold\)\]:hover{
     max-width: 100%;
   }
 }
+/* =========================
+   3D CARD EFFECT
+========================= */
+
+.tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+}
+
+.tilt:hover {
+  box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+}
+
+.tilt .tilt-inner {
+  transform: translateZ(30px);
+}
+
+/* smooth premium feel */
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--x,50%) var(--y,50%),
+    rgba(255,255,255,0.25),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.tilt:hover::after {
+  opacity: 1;
+}
